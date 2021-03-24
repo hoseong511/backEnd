@@ -1,0 +1,12 @@
+{
+  "name": "study",
+  "version": "1.0.0",
+  "description": "1. I/O 2. 비동기 vs 동기 3. non-blocking vs blocking",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {}
+}
