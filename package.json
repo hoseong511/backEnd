@@ -4,6 +4,7 @@
   "description": "1. I/O 2. 비동기 vs 동기 3. non-blocking vs blocking",
   "main": "main.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
