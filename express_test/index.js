@@ -18,6 +18,12 @@ app.use( logger('dev'));
 app.use( bodyParser.json());
 app.use( bodyParser.urlencoded({ extended : false }));
 app.use( '/uploads', express.static('uploads'));
+app.use( (req,res,next) => {
+  console.log("alemf");
+  console.log(res.statusCode);
+  app.locals.isLogin = true;
+  next();
+})
 
 
 app.get('/', (req, res) => {
@@ -30,8 +36,18 @@ app.get('/s', (req, res) => {
 
 app.use('/admin', admin);
 
-app.use('/admin/contact', admin);
 
+
+app.use( (req, res, _ ) => {
+  console.log(res.statusCode);
+  res.status(400).render('common/404.html');  
+  
+});
+app.use( (req, res, _ ) => {
+  
+  res.status(500).render('common/500.html');  
+  
+});
 
 
 app.listen(port, () => {
