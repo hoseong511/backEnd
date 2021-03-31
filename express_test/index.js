@@ -22,6 +22,7 @@ app.use( (req,res,next) => {
   console.log("alemf");
   console.log(res.statusCode);
   app.locals.isLogin = true;
+  app.locals.req_path = req.path;
   next();
 })
 
