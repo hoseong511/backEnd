@@ -15,10 +15,21 @@ class Robot {
   }
 
   speak() {
-    console.log(`${this.name}`)
+    console.log(`My name is ${this.name}`)
   }
 }
 
-const r = new Robot('hi')
+class Ai extends Robot {
+  constructor (name) {
+    super(name)
+  }
 
-const cache = new CacheManger()
+  walk(){
+    console.log(`walk: ${this.name}`)
+  }
+}
+const r = new Robot('hoho')
+r.speak()
+const r2 = new Ai('ho')
+r2.speak()
+r2.walk()
