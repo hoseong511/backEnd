@@ -2,7 +2,10 @@
 'use strict'
 
 const fs = require('fs')
+const { } = require('util')
+const wirteAndRead = (data ='') => {
 
+}
 fs.readFile('test.txt', 'utf-8', (err, data) => {
   // 에러에대한 핸들링이 우선임.
   if (err){
