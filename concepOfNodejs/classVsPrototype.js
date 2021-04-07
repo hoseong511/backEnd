@@ -43,3 +43,6 @@ class FullStack {
 const FullStack2 = new FullStack('js', 'javascript')
 FullStack2.getBackend()
 FullStack2.getFrontend()
+
+
+// 내부적으로 클로져 함수를 갖는 것 보다는 클래스를 이용한 객체표현이 훨씬 직관적임.
