@@ -17,3 +17,29 @@ function fullstack(backend, frontend) {
 const Fullstack = new fullstack('javascript', 'js')
 Fullstack.getBackend()
 Fullstack.getFrontend()
+// 내부적인 동작 메키니즘을 개선하는 방법 을 일컬어 리팩토링이라함.
+
+// 리팩토링
+class FullStack {
+  constructor(backend, frontend) {
+    this.backend = backend
+    this.frontend = frontend
+  }
+
+  getBackend (){
+    return this.backend
+  }
+  getFrontend () {
+    return this.frontend
+  }
+  setBackend (backend) {
+    this.backend = backend
+  }
+  setFrontend (frontend) {
+    this.frontend = frontend
+  }
+}
+
+const FullStack2 = new FullStack('js', 'javascript')
+FullStack2.getBackend()
+FullStack2.getFrontend()
