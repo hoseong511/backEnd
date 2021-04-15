@@ -71,7 +71,8 @@ p2()
   })
   .catch(reason => {
     console.log('1000ms 후에 rejected 됨.', reason);
+  })
+  .finally(() => {
+    console.log('end');
   });
-
-
-
+// .finally()를 설정해서 추가 작업을 수행함.
