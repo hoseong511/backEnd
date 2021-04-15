@@ -39,3 +39,18 @@ const p = new Promise((resolve, reject) =>{
 p.then(/*callback*/() => {
   console.log('1000ms 후에 fulfilled 됨');
 })
+
+// 실무에서는 then을 설정하는 시점을 정확히하고, 함수의 실행과 동시에 프로미스객체를 만들면서
+// pending이 시작하도록 하기 위해 프로미스 객체를 생성하면서 리턴하는 함수
+// p를 만들어 함수 p 실행과 동시에 then을 설정.
+function p1(){
+  return new Promise((resolve, reject) =>{
+    // pending
+    setTimeout(() => {
+      resolve(); //fulfilled
+    }, 3000);
+  });
+}
+p1().then(() => {
+  console.log('3000ms 후에 fulfilled 됨');
+})
