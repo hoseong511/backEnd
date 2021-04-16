@@ -53,3 +53,20 @@ const c = {
 c.hello1();
 c.hello2();
 c.hello3();
+
+// 표준 내장 객체 : Array
+
+const a1 = new Array('red', 'black', 'white');
+
+console.log(a1, typeof a1);
+console.log(a1 instanceof Array);
+console.log(a1 instanceof Object);
+
+const b1 = ['red', 'green', 'yellow'] // 리터럴 형태로 표현
+
+console.log(b1, typeof b1);
+console.log(b1 instanceof Array);
+console.log(b1 instanceof Object);
+
+console.log(b1.slice(0, 1));
+console.log(Array.prototype.slice, Object.prototype.slice);
