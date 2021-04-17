@@ -5,14 +5,16 @@ const Loading = () => <div>Loading...</div>
 function App() {
   const handleClick = (e) => {
     e.stopPropagation() // 중첩시 기능이 두번 실행되는 것을 방지
+    console.log(e);
     console.log('button is clicked');
   }
-  const newWhandleClick = (e) => {
-    e.preventDefault() // 이거는 작동이 안되는데?
+  const newWhandleClick = (param) => {
+    // e.preventDefault() // 이거는 작동이 안되는데?
+    console.log(param);
     console.log('wrapper is clicked');
   }
   return (
-    <div onClick={newWhandleClick}>
+    <div onClick={() => newWhandleClick('test')}>
       <button onClick={handleClick}>this is a button</button>
     </div>
     // ?? 안되는데??.. 중첩실행되는데..
