@@ -5,14 +5,19 @@ const Loading = () => <div>Loading...</div>
 class App extends React.Component {
   constructor(props){
     super(props)
-  }
-
-  componentWillMount(){
-
-  }
-  
+    this.state = {
+      lang: 'javascript',
+      data: new Date()
+    }
+  }  
   render() {
-    return(<></>)   //setstate 변경 x
+    const { lang, date } = this.state
+    return(
+    <>
+      <div>{lang}</div>
+      <div>{date}</div>
+    </>
+    )   
   }
 
   componentDidMount() {
