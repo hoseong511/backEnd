@@ -2,31 +2,22 @@ import React from "react";
 // 컴포넌트의 앞글자는 대문자.. 코드컨벤션임.
 const Loading = () => <div>Loading...</div>
 
-class App extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      lang: 'javascript',
-      data: new Date()
-    }
-  }  
-  render() {
-    const { lang, date } = this.state
-    return(
-    <>
-      <div>{lang}</div>
-      <div>{date}</div>
-    </>
-    )   
+function App() {
+  const handleClick = (e) => {
+    e.stopPropagation() // 중첩시 기능이 두번 실행되는 것을 방지
+    console.log('button is clicked');
   }
-
-  componentDidMount() {
-  
+  const newWhandleClick = (e) => {
+    e.preventDefault() // 이거는 작동이 안되는데?
+    console.log('wrapper is clicked');
   }
-
-  componentWillUnmount() { //setstate 변경 x
-
-  }
+  return (
+    <div onClick={newWhandleClick}>
+      <button onClick={handleClick}>this is a button</button>
+    </div>
+    // ?? 안되는데??.. 중첩실행되는데..
+  )
 }
+
 
 export default App;
