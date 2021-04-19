@@ -54,6 +54,15 @@ class ApiServer extends http.Server {
       console.log('비정상적인 종료 (강제 종료)');
       process.exit(1)
     }, this.config.shutdownTimeout).unref()
+//  failover 처리
+    if (this.currentConns.size > 0 ) {
+      console.log(`현재 동시접속중인 연결(${this.currentConns.size})을 대기중입니다`);
+      for (const con of this.currentConns) {
+        if(!this.busy.has(con)){
+          con.end()
+        }
+      }
+    }
   }
 }
 
