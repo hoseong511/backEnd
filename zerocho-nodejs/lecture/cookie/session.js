@@ -13,7 +13,7 @@ const parseCookies = (cookie = '') =>
       return acc
     }, {}); // { xxx : ooo} 이런식으로 만들어지는 코드
 
-const session = {};
+const session = {}; 
 
 http.createServer(async (req, res) => {
   const cookies = parseCookies(req.headers.cookie);
@@ -32,7 +32,7 @@ http.createServer(async (req, res) => {
       'Set-Cookie': `session=${uniqueInt}; name=${encodeURIComponent(name)}; Expires=${expires.toGMTString()}; HttpOnly; Path=/`,
     });    // name을 적어서 보내면 에러가 난다. session 처리를 하면 쿠키에 name프로퍼티를 쓸 수 없는 것 같다. -> 다시 확인 해보니 잘된다. 이건 아닌듯,.. 
     res.end(); // 실무에서는 이런식으로 절대 세션 처리하지 않는다. 실무에서는 express-session 이용
-  } else if (cookies.session && session[cookies.session].expires > new Date()) {
+  } else if (cookies.session && session[cookies.session] && session[cookies.session].expires > new Date()) { // 서버가 재시작 되었을 때 발생하는 문제였구나 -> session ={} 안에 값이 있는지를 검사하는 코드 추가
     res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8'});
     res.end(`${session[cookies.session].name}님 안녕하세요`)
   } else {
