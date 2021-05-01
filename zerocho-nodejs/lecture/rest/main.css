@@ -2,3 +2,19 @@ a {
   color:royalblue;
   text-decoration: none;
 }
+
+.input {
+}
+section {
+  display: flex;
+}
+section #list div {
+  margin: 10px 0;
+
+}
+span {
+  margin: 10px;
+}
+button {
+  
+}

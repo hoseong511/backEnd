@@ -17,7 +17,7 @@ http.createServer(async (req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
         return res.end(JSON.stringify(users));
       }
-
+      
       try {
         const data = await fs.readFile(`.${req.url}`);
         return res.end(data);
