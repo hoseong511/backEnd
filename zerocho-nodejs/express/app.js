@@ -1,10 +1,18 @@
 const express = require('express');
 const path = require('path')
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser')
 
 const app = express();
-app.set('port', process.env.PORT || 3000); //1. set
+app.set('port', process.env.PORT || 3000); 
 
-
+app.use(morgan('dev')); // 요청/응답을 기록하는 패키지이다.
+// app.use(morgan('combined')); // 배포용
+app.use(cookieParser('hohopassword')); // 암호화
+// body-parser의 기능이 express 안에 내장되어 있다. 그래서 아래와 같은 것들이 주로 사용된다.
+app.use(express.json());
+app.use(express.urlencoded({extended: true})); // 클라이언트에서 form 요청을 할때 form을 파싱한다. true면 qs false는 querystring?
+// form에서 이미지를 보낼때 멀터??를이용함
 app.use((req, res, next) => { 
   console.log('모든 요청에 실행하고 싶을 때 미들웨어를!'); 
   next();                                                 // 공통 미들웨어 부분!
@@ -16,26 +24,39 @@ app.use((req, res, next) => {
   next();
 }, ( req, res, next ) => {
   try {
-    console.log(asd);
+    console.log('hi');
+    next();
   } catch (error) {
-    next(error); // next의 인수가 있으면 에러 처리 미들웨어로 넘겨준다! <- 그냥 next()는 다음실행
+    next(error); 
   }
 });
 
 
  
 app.get('/', (req, res, next) => {
-  res.sendFile(path.join(__dirname, 'index.html')); // sendFile 하면 알아서 fs을 사용함 -> 라우터 요청이 발생할 때마다 새롭게 불러오는 역할
-  if (true) { // 이런식으로 분기 처리를 해서 이용가능하다. .. 중복을 줄일 때 유용하게 사용한다
+  res.sendFile(path.join(__dirname, 'index.html')); 
+  if (true) { 
      next('route');
   } else {
-    next(); // console.log('실행여부?'); 여기 코드로 넘어가는 부분
+    next(); 
   }
 }, (req, res) => {
   console.log('실행여부?');
 }); 
 
 app.post('/', (req, res) => { 
+  req.body
+  req.cookies // 쿠키가 쉽게 파싱된다.
+  req.signedCookies; // 다른 사람이 읽지 못하게 한다.
+  res.cookie('name', encodeURIComponent(name), {
+    expires: new Date(),
+    httpOnly: true,
+    path: '/',
+  })
+  res.clearCookie('name', encodeURIComponent(name), {
+    httpOnly: true,
+    path: '/',
+  })
   console.log('실행!');
   // res.writeHead(200, {'Content-Type': 'application/json'});
   // res.end(JSON.stringify({hello: 'hoho'})) 이 두줄을 아래 한줄로 처리!
