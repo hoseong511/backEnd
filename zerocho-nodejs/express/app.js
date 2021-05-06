@@ -1,10 +1,13 @@
+const dotenv = require('dotenv');
 const express = require('express');
 const path = require('path')
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser')
 const session = require('express-session');
 const multer = require('multer');
+const { fs } = require('fs');
 
+dotenv.config(); // process.env를 사용하는 패키지 보다는 위에 위치해야한다.
 const app = express();
 app.set('port', process.env.PORT || 3000); 
 
@@ -16,12 +19,12 @@ app.use('/', (req,res,next) => {
   }
 }); // 로그인한 사람에게 static을 보여주고 싶을때 -> 미들웨어 확장하는 방법!
 app.use(morgan('dev')); // 요청/응답을 기록하는 패키지이다.
-app.use(cookieParser('hohopassword')); // 암호화
+app.use(cookieParser(process.env.COOKIE_SECRET)); // 암호화
 app.use(express.urlencoded({extended: true})); // 클라이언트에서 form 요청을 할때 form을 파싱한다. true면 qs false는 querystring?
 app.use(session({
   resave: false,
   saveUninitialized: false,
-  secret: 'hohopassword',
+  secret: process.env.COOKIE_SECRET, // .env관리만 잘하면된다.
   cookie: {
     httpOnly: true,
   },
@@ -37,6 +40,34 @@ app.use((req,res,next) => {
   next();
 })
 
+try {
+  fs.readdirSync('uploads'); // 서버 시작전은 sync 사용해도 무방하다.
+} catch (error) {
+  console.error('upload 폴더를 만들겠습니다.');
+  fs.mkdirSync('uploads');
+}
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads/'); // 첫번째 인수는 에러가 났을 경우를 처리
+    },
+    filename(req, file, done) {
+      const ext = path.extname(file.originalname);
+      done(null, path.basename(file.originalname, ext) + Date.now() + ext)
+    },
+  }),
+  limits: { fileSize: 5 * 1024 * 1024 }, // -> 5MB
+});
+
+app.get('/upload', (req, res) => {
+  res.sendFile(path.join(__dirname, 'multipart.html'));
+});
+// upload.array('image')는 이미지가 multiple일때, upload.single('image') 이미지 하나
+// single -> array -> fields  | none도있다.
+app.post('/upload', upload.fields([{name: 'image1', limits: 5}, {name: 'image2'}, {name: 'image3'}]), (req, res) => {
+  console.log(req.files.image1); // 파일의 정보를 알 수 있다.
+  res.send('ok');
+})
  
 app.get('/', (req, res, next) => {
   res.sendFile(path.join(__dirname, 'index.html')); 
