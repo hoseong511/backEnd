@@ -8,44 +8,40 @@ const multer = require('multer');
 const app = express();
 app.set('port', process.env.PORT || 3000); 
 
-app.use(morgan('dev')); // 요청/응답을 기록하는 패키지이다.
-// static요청은 서버에 저장되어있는 이미지나 css,js파일을 단순히 응답받는것을 의미한다.
-// app.use('요청 경로', express.static('실제 경로')); --> 요청하는 경로와 실제 서버에 위치해있는 파일의 위치가 다르다(보안!!)
-app.use('/',express.static(path.join(__dirname, 'public-3248'))); // 조건을 만족했을 때 next가 따로 들어 있지 않다.! : 조건 x 시 next한다.
-app.use(cookieParser('hohopassword')); // 암호화
-app.use(express.json());
-app.use(express.urlencoded({extended: true})); // 클라이언트에서 form 요청을 할때 form을 파싱한다. true면 qs false는 querystring?
-app.use(session());
-app.use(multer().array());
-// 미들웨어의 순서에 따라서 사용 방향이 달라진다. ex) 사용자 정보(session)를 알 때 이미지를 제공한다면??
-
-app.use((req, res, next) => { 
-  console.log('모든 요청에 실행하고 싶을 때 미들웨어를!'); 
-  next();                                                 // 공통 미들웨어 부분!
-}, (req, res, next) => {
-  console.log('2. 미들웨어');
-  next();
-}, (req, res, next) => {
-  console.log('3. 미드르루에어');
-  next();
-}, ( req, res, next ) => {
-  try {
-    console.log('hi');
+app.use('/', (req,res,next) => {
+  if (req,session.id){
+    express.static(path.join(__dirname, 'public-3248'))(req, res, next)  
+  } else {
     next();
-  } catch (error) {
-    next(error); 
   }
-});
+}); // 로그인한 사람에게 static을 보여주고 싶을때 -> 미들웨어 확장하는 방법!
+app.use(morgan('dev')); // 요청/응답을 기록하는 패키지이다.
+app.use(cookieParser('hohopassword')); // 암호화
+app.use(express.urlencoded({extended: true})); // 클라이언트에서 form 요청을 할때 form을 파싱한다. true면 qs false는 querystring?
+app.use(session({
+  resave: false,
+  saveUninitialized: false,
+  secret: 'hohopassword',
+  cookie: {
+    httpOnly: true,
+  },
+  name: 'connect.sid',
+})); // 개인의 저장공간을 만들어주는 것이 세션이다. -> 
+app.use(express.json());
 
+// 미들웨어에서 데이터 전달하기
+app.use((req,res,next) => {
+  // app.set() --> 전역으로 데이터를 선언하기 때문에 사용한다면 개인데이터 이용에 쓰지말자
+  req.data = 'hoho'; // 요청시 1회 이용된다. 다음 요청에 해당 데이터를 다룰 수 없다.
+  req.session.data = 'password'; // 다음 요청에도 이용된다.
+  next();
+})
 
  
 app.get('/', (req, res, next) => {
   res.sendFile(path.join(__dirname, 'index.html')); 
-  if (true) { 
-     next('route');
-  } else {
-    next(); 
-  }
+  console.log(req.data);
+  console.log(req.session.data);
 }, (req, res) => {
   console.log('실행여부?');
 }); 
