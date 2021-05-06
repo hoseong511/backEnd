@@ -8,6 +8,9 @@ const multer = require('multer');
 const { fs } = require('fs');
 
 dotenv.config(); // process.env를 사용하는 패키지 보다는 위에 위치해야한다.
+const indexRouter = require('./routes');
+const userRouter = require('./routes/user');
+
 const app = express();
 app.set('port', process.env.PORT || 3000); 
 
@@ -32,42 +35,9 @@ app.use(session({
 })); // 개인의 저장공간을 만들어주는 것이 세션이다. -> 
 app.use(express.json());
 
-// 미들웨어에서 데이터 전달하기
-app.use((req,res,next) => {
-  // app.set() --> 전역으로 데이터를 선언하기 때문에 사용한다면 개인데이터 이용에 쓰지말자
-  req.data = 'hoho'; // 요청시 1회 이용된다. 다음 요청에 해당 데이터를 다룰 수 없다.
-  req.session.data = 'password'; // 다음 요청에도 이용된다.
-  next();
-})
-
-try {
-  fs.readdirSync('uploads'); // 서버 시작전은 sync 사용해도 무방하다.
-} catch (error) {
-  console.error('upload 폴더를 만들겠습니다.');
-  fs.mkdirSync('uploads');
-}
-const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, 'uploads/'); // 첫번째 인수는 에러가 났을 경우를 처리
-    },
-    filename(req, file, done) {
-      const ext = path.extname(file.originalname);
-      done(null, path.basename(file.originalname, ext) + Date.now() + ext)
-    },
-  }),
-  limits: { fileSize: 5 * 1024 * 1024 }, // -> 5MB
-});
-
-app.get('/upload', (req, res) => {
-  res.sendFile(path.join(__dirname, 'multipart.html'));
-});
-// upload.array('image')는 이미지가 multiple일때, upload.single('image') 이미지 하나
-// single -> array -> fields  | none도있다.
-app.post('/upload', upload.fields([{name: 'image1', limits: 5}, {name: 'image2'}, {name: 'image3'}]), (req, res) => {
-  console.log(req.files.image1); // 파일의 정보를 알 수 있다.
-  res.send('ok');
-})
+// 라우터 연결
+app.use('/', indexRouter);
+app.use('/user', userRouter); // 관련된 라우터끼리 묶어서 관리하자
  
 app.get('/', (req, res, next) => {
   res.sendFile(path.join(__dirname, 'index.html')); 
