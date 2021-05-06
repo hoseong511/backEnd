@@ -2,17 +2,23 @@ const express = require('express');
 const path = require('path')
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser')
+const session = require('express-session');
+const multer = require('multer');
 
 const app = express();
 app.set('port', process.env.PORT || 3000); 
 
 app.use(morgan('dev')); // 요청/응답을 기록하는 패키지이다.
-// app.use(morgan('combined')); // 배포용
+// static요청은 서버에 저장되어있는 이미지나 css,js파일을 단순히 응답받는것을 의미한다.
+// app.use('요청 경로', express.static('실제 경로')); --> 요청하는 경로와 실제 서버에 위치해있는 파일의 위치가 다르다(보안!!)
+app.use('/',express.static(path.join(__dirname, 'public-3248'))); // 조건을 만족했을 때 next가 따로 들어 있지 않다.! : 조건 x 시 next한다.
 app.use(cookieParser('hohopassword')); // 암호화
-// body-parser의 기능이 express 안에 내장되어 있다. 그래서 아래와 같은 것들이 주로 사용된다.
 app.use(express.json());
 app.use(express.urlencoded({extended: true})); // 클라이언트에서 form 요청을 할때 form을 파싱한다. true면 qs false는 querystring?
-// form에서 이미지를 보낼때 멀터??를이용함
+app.use(session());
+app.use(multer().array());
+// 미들웨어의 순서에 따라서 사용 방향이 달라진다. ex) 사용자 정보(session)를 알 때 이미지를 제공한다면??
+
 app.use((req, res, next) => { 
   console.log('모든 요청에 실행하고 싶을 때 미들웨어를!'); 
   next();                                                 // 공통 미들웨어 부분!
