@@ -24,6 +24,6 @@ module.exports = class Comment extends Sequelize.Model {
   }
 
   static associate(db) {
-    db.User.hasMany(db.Comment, { foreignKey: 'commenter', sourceKey: 'id'}); // user 가 여러개의 comment를 작성한다.
+    db.Comment.belongsTo(db.User, { foreignKey: 'commenter', target: 'id'}); // user 가 여러개의 comment를 작성한다.
   }
 }

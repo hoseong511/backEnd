@@ -4,7 +4,10 @@ const morgan = require('morgan');
 const nunjucks = require('nunjucks');
 
 const { sequelize } = require('./models');
-const router = require('./routes/index')
+
+const indexRouter = require('./routes');
+const userRouter = require('./routes/users');
+const commentsRouter = require('./routes/comments');
 
 const app = express();
 app.set('port', process.env.PORT || 3001 );
@@ -26,8 +29,10 @@ sequelize.sync({ force: false})
   app.use(express.json());
   app.use(express.urlencoded({ extended: false}));
 
-  app.use('/', router );
-
+  app.use('/', indexRouter );
+  app.use('/users', userRouter);
+  app.use('/comments', commentsRouter);
+  
   app.use((req, res, next) => {
     const error = new Error(`${req.method} ${req.url} 라우터 x`);
     error.status = 404;
@@ -41,6 +46,6 @@ sequelize.sync({ force: false})
     res.render('error');
   });
 
-  // app.listen(app.get('port'), () => {
-  //   console.log('server running..');
-  // });
+  app.listen(app.get('port'), () => {
+    console.log('server running..');
+  });

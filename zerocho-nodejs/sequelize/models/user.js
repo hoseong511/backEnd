@@ -44,7 +44,7 @@ module.exports = class User extends Sequelize.Model {
 
   static associate(db) {
     // 1 대 다, 1대1, 다 대 다( 중간 테이블이 생성된다. )
-    db.Comment.belongsTo(db.User, { foreignKey: 'commenter', target: 'id'});
+    db.User.hasMany(db.Comment, { foreignKey: 'commenter', sourceKey: 'id'});
     // belongsTo에 foreignKey가 들어간다. 
   }
 }
