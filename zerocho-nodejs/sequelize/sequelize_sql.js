@@ -50,3 +50,16 @@ User.update({
 User.destory({
   where: { id : { [Op.in]: [1,3,5]}}
 });
+
+// 결과값은 자바스크립트 객체이다
+const user = await User.findOne({});
+console.log(user.nick);
+
+// include로 join과 비슷한 기능 수행
+const user = await User.findOne({
+  include: [{
+    model: Comment,
+  }]
+});
+console.log(user.Comments);
+
