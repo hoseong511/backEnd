@@ -3,11 +3,6 @@ const Sequelize = require('sequelize');
 module.exports = class User extends Sequelize.Model {
   static init(sequelize){
     return super.init({
-      // id: {
-      //   type: Sequelize.INTEGER,
-      //   primaryKey: true,
-
-      // },// sequelize는 아이디를 자동생성
       name: {
         type: Sequelize.STRING(20),
         allowNull: false,

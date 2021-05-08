@@ -14,6 +14,7 @@ db.sequelize = sequelize;
 
 db.User = User;
 db.Comment = Comment;
+
 User.init(sequelize); // 연결 객체로 모델이랑 테이블 연결
 Comment.init(sequelize);
 

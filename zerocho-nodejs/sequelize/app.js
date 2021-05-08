@@ -5,7 +5,7 @@ const nunjucks = require('nunjucks');
 
 const { sequelize } = require('./models');
 
-const indexRouter = require('./routes');
+const indexRouter = require('./routes/index');
 const userRouter = require('./routes/users');
 const commentsRouter = require('./routes/comments');
 
