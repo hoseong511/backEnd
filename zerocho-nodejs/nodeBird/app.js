@@ -11,7 +11,7 @@ dotenv.config();
 const pageRouter = require('./routes/page.js');
 const authRouter = require('./routes/auth')
 const { sequelize } = require('./models');
-
+const passportConfig = require('./passport');
 
 const app = express();
 app.set('port', process.env.PORT || 8081);
@@ -27,6 +27,8 @@ sequelize.sync({ force: false }) // force: true이면 db를 삭제 후 다시 �
   .catch((err) => {
     console.error(err);
   });
+passportConfig();
+
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
@@ -41,6 +43,7 @@ app.use(session({
     secure: false,
   }
 }));
+ 
 app.use(passport.initialize());
 app.use(passport.session());
 

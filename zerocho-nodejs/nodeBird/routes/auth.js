@@ -45,9 +45,17 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
   })(req, res, next); // 미들웨어 안에 미들웨어에는 (req, res, next)-> 미들웨어를 확장하는 패턴!
 })
 
-router.get('/logout', isNotLoggedIn, (req, res) => {
+router.get('/logout', isLoggedIn, (req, res) => {
   req.logout();
   req.session.destroy();
+  res.redirect('/');
+})
+
+router.get('/kakao', passport.authenticate('kakao'));
+
+router.get('/kakao/callback', passport.authenticate('kakao', {
+  failureRedirect: '/',
+}), (req, res) => { // /callback?code=xxxxxxxxxxxxx -> queryString으로 정보를 담아서 보낸다.
   res.redirect('/');
 })
 
