@@ -1,5 +1,5 @@
 const express = require('express');
-const { Post, User } = require('../models');
+const { Post, User, Hashtag } = require('../models');
 
 const router = express.Router();
 
@@ -43,5 +43,26 @@ router.get('/', async (req, res) => {
   //   twits,
   // });
 });
+
+router.get('/hashtag', async (req, res, next) => {
+  const query = decodeURIComponent(req.query.hashtag);
+  if (!query) {
+    return res.redirect('/');
+  }
+  try {
+    const hashtag = await Hashtag.findOne({ where: { title: query }})
+    let posts = [];
+    if (hashtag) {
+      posts = await hashtag.getPosts({ include: [{ model: User , attributes: ['id', 'nick']}] }); // 보안상 필요한 컬럼만 가져오자!
+    }
+    return res.render('main', {
+      title: `${query} 검색 결과 | NodeBird`,
+      twits: posts,
+    });
+  } catch (err) {
+    console.error(err);
+    return next(err);
+  }
+})
 
 module.exports = router;

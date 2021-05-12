@@ -50,6 +50,7 @@
         const formData = new FormData();
         console.log(this, this.files);
         formData.append('img', this.files[0]);
+        // axios.post(`/post/img?hashtag=${encodeURIComponent('')}`, formData);
         axios.post('/post/img', formData)
           .then((res) => {
             document.getElementById('img-url').value = res.data.url;
