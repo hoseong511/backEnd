@@ -5,9 +5,9 @@ const router = express.Router();
 
 router.use((req, res, next) => {
   res.locals.user = req.user;
-  res.locals.followerCount = 0;
-  res.locals.followingCount = 0;
-  res.locals.followerIdList = [];
+  res.locals.followerCount = req.user ? req.user.Followers.length : 0;
+  res.locals.followingCount = req.user ? req.user.Followings.length : 0;
+  res.locals.followerIdList = req.user ? req.user.Followings.map(f => f.id) : [];
   // res.locals.user = req.user; // (장착되는) res.locals를 사용하면 모든 라우터에 저장되는 특성을 이용하자
   next();
 });

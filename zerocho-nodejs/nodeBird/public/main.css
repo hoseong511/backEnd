@@ -8,7 +8,7 @@ html, body { margin: 0; padding: 0; height: 100%; }
   border-radius: 4px;
   background: white;
   border: 1px solid silver;
-  color: crimson;
+  color: royalblue;
   height: 37px;
   line-height: 37px;
   vertical-align: top;
@@ -44,7 +44,8 @@ input[type='text'], input[type='email'], input[type='password'], textarea {
   margin-right: 10px;
   border-radius: 4px;
   border: 1px solid silver;
-  background: lightcoral;
+  background: royalblue;
+  color: white;
 }
 .user-name { font-weight: bold; font-size: 18px; }
 .count { font-weight: bold; color: crimson; font-size: 18px; }
@@ -59,7 +60,7 @@ input[type='text'], input[type='email'], input[type='password'], textarea {
 #twit-form {
   border-bottom: 1px solid silver;
   padding: 10px;
-  background: lightcoral;
+  background: royalblue;
   overflow: hidden;
 }
 #img-preview { max-width: 100%; }
@@ -67,7 +68,7 @@ input[type='text'], input[type='email'], input[type='password'], textarea {
   float: left;
   cursor: pointer;
   border-radius: 4px;
-  border: 1px solid crimson;
+  border: 1px solid gray;
   padding: 0 10px;
   color: white;
   font-size: 12px;
@@ -79,7 +80,7 @@ input[type='text'], input[type='email'], input[type='password'], textarea {
 #twit-btn {
   float: right;
   color: white;
-  background: crimson;
+  background: gray;
   border: none;
 }
 .twit {
