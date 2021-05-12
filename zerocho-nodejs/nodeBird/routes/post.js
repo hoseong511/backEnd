@@ -41,6 +41,26 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next)=> {
       img: req.body.url,
       UserId: req.user.id,
     });
+/**
+ * [#노드, #익스프레스]
+ * [노드, 익스프레스]
+ * [findOrCreate(노드), findOrCreate(익스프레스)]
+ * [[해시태그, false], [해시태그, true]]
+ * 정규표현식과, sql의 join, transaction 관계형 데이터베이스를 사용한다면 중요한 개념!
+ * findOrCreate, upsert 등등 sequelize공식문서를 확인해보면 여러가지로 많다.
+ */
+    const hashtags = req.body.content.match(/#[^\s#]+/g);
+    if (hashtags) {
+      const result = await Promise.all(
+        hashtags.map(tag => {
+          return Hashtag.findOrCreate({
+            where: { title: tag.slice(1).toLowerCase() },
+          })
+        }),
+      );
+      console.log(result);
+      await post.addHashtags(result.map(r => r[0]));
+    }
     res.redirect('/');
   } catch (err) {
     console.error(err);
