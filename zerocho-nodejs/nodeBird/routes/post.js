@@ -78,7 +78,10 @@ router.post("/:id/delete", isLoggedIn, async (req, res, next) => {
       },
     });
     res.redirect("/");
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 });
 
 module.exports = router;
