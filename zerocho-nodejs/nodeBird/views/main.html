@@ -33,6 +33,9 @@
             {% if not followerIdList.includes(twit.User.id) and twit.User.id !== user.id %}
               <button class="twit-follow">팔로우하기</button>
             {% endif %}
+            {% if twit.User.id === user.id %}
+              <button class="twit-delete">x</button>
+            {% endif %}
             <div class="twit-content">{{twit.content}}</div>
             {% if twit.img %}
               <div class="twit-img"><img src="{{twit.img}}" alt="섬네일"></div>
@@ -51,6 +54,7 @@
         console.log(this, this.files);
         formData.append('img', this.files[0]);
         // axios.post(`/post/img?hashtag=${encodeURIComponent('')}`, formData);
+        console.log(formData);
         axios.post('/post/img', formData)
           .then((res) => {
             document.getElementById('img-url').value = res.data.url;
@@ -81,5 +85,17 @@
         }
       });
     });
+
+    document.querySelectorAll('.twit-delete').forEach( tag => {
+      tag.addEventListener('click', () => {
+        const myId = document.querySelector('#my-id');
+        if (myId) {
+          if (confirm('게시물을 삭제하시겠습니까?')) {
+            console.log(myId);
+            axios.post(`/user/${myId}`)
+          }
+        }
+      })
+    })
   </script>
 {% endblock %}
