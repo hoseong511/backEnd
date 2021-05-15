@@ -16,7 +16,7 @@ router.post("/token", async (req, res) => {
         attributes: ["nick", "id"],
       },
     });
-    if (!domain) {
+    if (!domain.host) {
       return res.status(401).json({
         code: 401,
         message: "등록되지 않은 도메인입니다. 먼저 도메인을 등록하세요",
@@ -24,8 +24,9 @@ router.post("/token", async (req, res) => {
     }
     const token = jwt.sign(
       {
-        id: domain.user.id,
-        nick: domain.user.nick,
+        id: domain.User.id,
+        nick: domain.User.nick,
+        host: domain.host,
       },
       process.env.JWT_SECRET,
       {
@@ -48,7 +49,7 @@ router.post("/token", async (req, res) => {
 });
 
 router.get("/test", verifyToken, (req, res) => {
-  res.json(req.decoded);
+  return res.json(req.decoded);
 });
 
 module.exports = router;

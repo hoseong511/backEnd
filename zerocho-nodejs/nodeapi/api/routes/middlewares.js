@@ -21,9 +21,14 @@ exports.isNotLoggedIn = (req, res, next) => {
 exports.verifyToken = (req, res, next) => {
   try {
     req.decoded = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
-    return next();
+    next();
+    return res.json({
+      code: 200,
+      message: "토큰이 확인되었습니다.",
+    });
   } catch (err) {
-    if (error.name === "TokenExpriedError") {
+    console.log(err.name);
+    if (err.name === "TokenExpiredError") {
       return res.status(419).json({
         code: 419,
         message: "토큰이 만료되었습니다.",
