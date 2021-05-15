@@ -24,7 +24,7 @@ nunjucks.configure("views", {
 sequelize
   .sync({ force: false })
   .then(() => {
-    console.log("데이터 베이스 연결 성공");
+    console.log("데이터베이스 연결 성공");
   })
   .catch((err) => {
     console.error(err);
@@ -34,7 +34,7 @@ app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookiParser(process.env.COOKIE_SECRET));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
   session({
     resave: false,
@@ -49,7 +49,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/auth", authROuter);
+app.use("/auth", authRouter);
 app.use("/", indexRouter);
 
 app.use((req, res, next) => {
