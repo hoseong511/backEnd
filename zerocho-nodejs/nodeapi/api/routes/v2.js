@@ -2,7 +2,6 @@
 
 const express = require("express");
 const jwt = require("jsonwebtoken");
-
 const { verifyToken, apiLimiter } = require("./middlewares");
 const { Domain, User, Post, Hashtag } = require("../models");
 
@@ -37,6 +36,8 @@ router.post("/token", apiLimiter, async (req, res) => {
         issuer: "nodebird",
       }
     );
+    // res.setHeader('Access-Control-Allow-Origin', '*') --> 이코드는 작동 안됨
+    // res.setHeader('Access-Control-Allow-Credentials', 'true')
     return res.json({
       code: 200,
       message: "토큰이 발급되었습니다.",
