@@ -45,7 +45,7 @@ exports.apiLimiter = new RateLimit({
   delayMs: 0, // 
   handler(req, res) {
     res.status(this.statusCode).json({ //429 status코드는 문서화 잘해놓자
-      code: this.statusCod,
+      code: this.statusCode,
       message: '1분에 10번만 요청할 수 있습니다.',
     })
   }

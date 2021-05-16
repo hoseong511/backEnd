@@ -19,7 +19,6 @@ router.post("/token", apiLimiter, async (req, res) => {
       },
     });
     console.log(req.headers);
-    console.log(domain);
     if (!domain) {
       return res.status(401).json({
         code: 401,
@@ -84,8 +83,8 @@ router.get("/posts/hashtag/:title", verifyToken, async (req, res) => {
       where: { title: req.params.title },
     });
     if (!hashtag) {
-      return res.status(404).json({
-        code: 404,
+      return res.status(204).json({
+        code: 204,
         message: "검색 결과가 없습니다.",
       });
     }

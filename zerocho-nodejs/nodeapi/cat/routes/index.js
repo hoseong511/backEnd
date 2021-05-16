@@ -4,7 +4,7 @@ const { token } = require("morgan");
 
 const router = express.Router();
 // 토큰 재발급 받기 위한 조건
-const URL = "http://localhost:8002/v1";
+const URL = "http://localhost:8002/v2";
 axios.defaults.headers.origin = "http://localhost:4002"; // 서버 -> 서버 는 origin이 붙지 않는다. 브라우저는 origin을 붙여준다.
 
 const request = async (req, api) => {
