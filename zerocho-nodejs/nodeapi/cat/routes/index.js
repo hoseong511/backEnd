@@ -1,8 +1,6 @@
 const express = require("express");
 const axios = require("axios");
 const { token } = require("morgan");
-const { verifyToken } = require("../../api/routes/middlewares");
-const { Hashtag } = require("../../api/models");
 
 const router = express.Router();
 // 토큰 재발급 받기 위한 조건
@@ -41,13 +39,13 @@ router.get("/mypost", async (req, res, next) => {
   }
 });
 
-router.get("/search/:hashtag", verifyToken, async (req, res) => {
+router.get("/search/:hashtag", async (req, res) => {
   try {
     const hashtag = await request(
       req,
-      `/posts/hashtags/${encodeURIComponent(req.params.hashtag)}`
+      `/posts/hashtag/${encodeURIComponent(req.params.hashtag)}`
     );
-    res.json(result.data);
+    res.json(hashtag.data);
   } catch (error) {
     console.error(error);
     next(error);

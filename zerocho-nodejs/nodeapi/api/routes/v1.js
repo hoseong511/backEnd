@@ -77,6 +77,7 @@ router.get("/posts/my", verifyToken, (req, res) => {
 
 router.get("/posts/hashtag/:title", verifyToken, async (req, res) => {
   try {
+    console.log('여기');
     const hashtag = await Hashtag.findOne({
       where: { title: req.params.title },
     });
