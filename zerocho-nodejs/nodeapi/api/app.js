@@ -51,10 +51,10 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors({
-  origin: true, //*하고 credentials를 같이 사용할 수 없다.
-  credentials: true,
-}));
+// app.use(cors({
+//   origin: true, //*하고 credentials를 같이 사용할 수 없다.
+//   credentials: true,
+// }));
 
 app.use("/auth", authRouter);
 app.use("/", indexRouter);

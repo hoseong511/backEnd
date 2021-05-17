@@ -8,11 +8,11 @@ const dotenv = require("dotenv");
 const passport = require("passport");
 
 dotenv.config();
+const { sequelize } = require("./models");
 const pageRouter = require("./routes/page.js");
 const authRouter = require("./routes/auth");
 const postRouter = require("./routes/post");
 const userRouter = require("./routes/user");
-const { sequelize } = require("./models");
 const passportConfig = require("./passport");
 
 const app = express();
@@ -40,10 +40,12 @@ app.use(express.urlencoded({ extended: false })); // req.body 형태로 변환�
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
   session({
-    resave: false,
-    saveUninitialized: false,
+    // httpOnly: true,	//자바스크립트를 통해 세션 쿠키를 사용할 수 없도록 함
+    // secure: ture,	//https 환경에서만 session 정보를 주고받도록 처리
+    resave: false, //세션이 요청 중 변경되지 않아도 저장할지 말지를 저장한다
+    saveUninitialized: false, //세션이 저장되기 전 uninitialized 상태로 미리 만들어 저장
     secret: process.env.COOKIE_SECRET,
-    cookie: {
+    cookie: { //세션 쿠키 설정 (세션 관리 시 클라이언트에 보내는 쿠키
       httpOnly: true,
       secure: false,
     },

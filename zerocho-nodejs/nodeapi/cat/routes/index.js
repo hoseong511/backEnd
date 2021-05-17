@@ -51,4 +51,8 @@ router.get("/search/:hashtag", async (req, res) => {
     next(error);
   }
 });
+
+router.get('/', (req, res) => {
+  res.render('main', {key: process.env.CLIENT_SECRET}) // 원래는 프론트와 서버용을 분리해야한다.
+})
 module.exports = router;

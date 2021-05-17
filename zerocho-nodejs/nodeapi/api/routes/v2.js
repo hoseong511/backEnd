@@ -4,8 +4,23 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const { verifyToken, apiLimiter } = require("./middlewares");
 const { Domain, User, Post, Hashtag } = require("../models");
+const cors = require('cors');
+const { urlencoded } = require("express");
 
 const router = express.Router();
+router.use(cors( async (req, res, next) => { // 미들웨어 확장 패턴
+  const domain = await Domain.findOne({
+    where: { host: urlencoded.parse(req.get('origin'))?.host}
+  }) 
+  if (domain) {
+    cors({
+      origin: true,
+      credentials: true,
+    })(req, res, next)
+  } else {
+    next();
+  }
+})) 
 
 router.post("/token", apiLimiter, async (req, res) => {
   const { clientSecret } = req.body;
