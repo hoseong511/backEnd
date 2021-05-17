@@ -8,3 +8,6 @@
     />
   </a>
 </p>
+<a href="http://52.79.196.232:8001/">NodeBird Demo</a>
+<a href="http://52.79.196.232:8002/">NodeBird API Demo</a>
+
